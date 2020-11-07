@@ -1,0 +1,17 @@
+all:
+  vars:
+    ansible_ssh_common_args: -o StrictHostKeyChecking=no
+    cluster_name: primary
+    join_retry: [10.102.2.141, 10.102.2.101, 10.102.2.207]
+consul:
+  hosts:
+    primary-consul01: {cluster_ip: 10.102.2.141, hostname: primary-consul01}
+    primary-consul02: {cluster_ip: 10.102.2.101, hostname: primary-consul02}
+    primary-consul03: {cluster_ip: 10.102.2.207, hostname: primary-consul03}
+vault:
+  hosts:
+    primary-pki: {cluster_ip: 10.102.2.37, hostname: primary-pki}
+    primary-unsealer: {cluster_ip: 10.102.2.75, hostname: primary-unsealer}
+    primary-vault01: {cluster_ip: 10.102.2.80, hostname: primary-vault01}
+    primary-vault02: {cluster_ip: 10.102.2.133, hostname: primary-vault02}
+    primary-vault03: {cluster_ip: 10.102.2.235, hostname: primary-vault03}

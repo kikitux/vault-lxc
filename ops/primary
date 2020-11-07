@@ -9,14 +9,14 @@ if [[ "$DEBUG" == "true" ]];then
     set -x
 fi
 case "$0" in
-"ops/p")
+"ops/primary")
     export VAULT_CLUSTER="primary"
     export VAULT_ADDR=https://127.0.0.1:9301
     export VAULT_BASE_ADDR=https://127.0.0.1:930
     export VAULT_UNSEALER_ADDR=https://127.0.0.1:9300
     export VAULT_PKI_ADDR=http://127.0.0.1:9304
 ;;
-"ops/s")
+"ops/secondary")
     export VAULT_CLUSTER="secondary"
     export VAULT_ADDR=https://127.0.0.1:9501
     export VAULT_BASE_ADDR=https://127.0.0.1:950
@@ -36,10 +36,14 @@ YAPI_BASE="ops/api"
 YAPI_PATH="${YAPI_BASE}/vault"
 bold=$(tput bold)
 normal=$(tput sgr0)
+
 #Internal variables
 export VAULT_DATA="ops/data/${VAULT_CLUSTER}"
-export VAULT_TOKEN=$(cat $VAULT_DATA/init.json | jq -r '.root_token')
+[ -f $VAULT_DATA/init.json ] && {
+    export VAULT_TOKEN=$(cat $VAULT_DATA/init.json | jq -r '.root_token')
+}
 export VAULT_PREFIX=""
+
 case "$1" in
 "help")
         echo "${bold}Usage: $0 <vault node> <vault command>| <operation command>${normal}"

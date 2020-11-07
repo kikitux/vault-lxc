@@ -10,3 +10,7 @@ for container in containers:
     if any([container.status == 'Running', container.status == 'Frozen']):
         container.stop(wait=True)
         print("status ", container.status)
+
+for container in containers:
+    print("name ", container.name)
+    container.delete(wait=True)

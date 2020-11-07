@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+
 import sys
 import yaml
+
 from pathlib import Path
 from subprocess import run
 from pylxd import Client
@@ -24,13 +26,17 @@ provision_cmds = [
 base_cmd = [
     "apt-get update".split(),
     "apt-get upgrade -y".split(),
-    "apt-get install -y jq mc joe".split(),
-    "apt autoremove -y".split(),
+    "apt-get install -y jq mc joe python-is-python2".split(),
+    "apt-get autoremove -y".split(),
 ]
 
 
 def main():
-    cluster_name = sys.argv[1]
+    if len(sys.argv)>1:
+        cluster_name = sys.argv[1]
+    else:
+        print("argument need to be primary, secondary o dr")
+        exit(1)
     create_proxy()
     create_cluster(cluster_name)
 
@@ -281,7 +287,7 @@ def create_c(name, iface):
             "alias": "focal/amd64",
         },
         "config": {"security.privileged": "True",},
-        "devices": {"eth0": {"name": "eth0", "network": iface, "type": "nic"},},
+        "devices": {"eth0": {"name": "eth0", "nictype": "bridged", "parent": iface, "type": "nic"},},
     }
     pprint.pprint(config)
     print("creating container", name)
@@ -344,7 +350,7 @@ def execute_c(container, command, environment):
     print("\tcommand: {}".format(command))
     result = container.execute(command, environment)
     print("\texit_code: {}".format(result.exit_code))
-    print("\tstdout: {}".format(result.stdout))
+    print("\tstdout: {}".format(result.stdout.encode("ascii", "ignore")))
     if result.stderr:
         print("\tstderr: {}".format(result.stderr))
 

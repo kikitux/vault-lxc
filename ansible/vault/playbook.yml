@@ -11,7 +11,7 @@
     HOSTNAME: "{{ hostname }}"
     JOIN_RETRY: "{{ join_retry }}"
     CLUSTER: "{{ cluster_name }}"
-    BIN_DIR: "/home/bruj0/backup/enterprise_bins"
+    BIN_DIR: "/home/kikitux/Dropbox/Shared/bin_dir/"
     vault_template_name: "{{ 'vault-pki.hcl.j2' if 'pki' in HOSTNAME else 'vault-unsealer.hcl.j2' if 'unsealer' in HOSTNAME else 'vault.hcl.j2' }}"
   roles:
     - consul-agent
@@ -25,6 +25,6 @@
     HOSTNAME: "{{ hostname }}"
     JOIN_RETRY: "{{ join_retry }}"
     CLUSTER: "{{ cluster_name }}"
-    BIN_DIR: "/home/bruj0/backup/enterprise_bins"
+    BIN_DIR: "/home/kikitux/Dropbox/Shared/bin_dir/"
   roles:
     - consul
